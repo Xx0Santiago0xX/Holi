@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Me Gustas Mucho</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f8e8e8;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            overflow: hidden;
+        }
+        
+        .envelope-container {
+            position: relative;
+            width: 380px;
+            height: 280px;
+            margin-top: 60px;
+        }
+        
+        .envelope {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #e74c3c;
+            border-radius: 8px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            z-index: 1;
+            overflow: hidden;
+        }
+        
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #c0392b;
+            clip-path: polygon(0 0, 50% 50%, 100% 0);
+            transform-origin: top;
+            transform: rotateX(0deg);
+            transition: all 0.8s ease;
+            z-index: 3;
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .envelope.open .envelope-flap {
+            transform: rotateX(180deg);
+            z-index: 0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        
+        .letter {
+            position: absolute;
+            width: 94%;
+            height: 92%;
+            background: white;
+            left: 3%;
+            top: 120%;
+            border-radius: 6px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+            transition: all 1.2s cubic-bezier(0.33, 0.1, 0.21, 1);
+            z-index: 2;
+            padding: 35px;
+            box-sizing: border-box;
+            opacity: 0;
+        }
+        
+        .envelope.open .letter {
+            transform: translateY(-320px);
+            height: 300px;
+            opacity: 1;
+        }
+        
+        .letter-content {
+            text-align: center;
+            font-size: 24px;
+            color: #333;
+            margin: 30px 0 20px 0; /* Reduje margen inferior para las flores */
+            line-height: 1.7;
+            animation: fadeIn 1.2s ease;
+        }
+        
+        /* Estilos para las flores */
+        .flowers {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
+            animation: fadeIn 1s ease 0.3s both;
+        }
+        
+        .flower {
+            width: 30px;
+            height: 30px;
+            position: relative;
+        }
+        
+        .flower-center {
+            width: 12px;
+            height: 12px;
+            background: #FFD700;
+            border-radius: 50%;
+            position: absolute;
+            top: 9px;
+            left: 9px;
+            z-index: 1;
+        }
+        
+        .petal {
+            width: 15px;
+            height: 15px;
+            background: #FF69B4;
+            border-radius: 50% 0;
+            position: absolute;
+        }
+        
+        .petal:nth-child(1) { top: 0; left: 7px; transform: rotate(0deg); }
+        .petal:nth-child(2) { top: 7px; right: 0; transform: rotate(90deg); }
+        .petal:nth-child(3) { bottom: 0; left: 7px; transform: rotate(180deg); }
+        .petal:nth-child(4) { top: 7px; left: 0; transform: rotate(270deg); }
+        
+        .external-text {
+            position: absolute;
+            top: -50px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 17px;
+            color: #555;
+            font-weight: bold;
+        }
+        
+        .envelope-front-text {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-size: 19px;
+            z-index: 4;
+            transition: all 0.6s ease;
+            opacity: 1;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+        }
+        
+        .envelope.open .envelope-front-text {
+            opacity: 0;
+            transform: translateY(25px);
+        }
+        
+        .sender {
+            position: absolute;
+            bottom: 40px;
+            right: 30px;
+            font-size: 15px;
+            color: #555;
+            font-style: italic;
+        }
+        
+        .receiver {
+            position: absolute;
+            top: 25px;
+            left: 30px;
+            font-size: 15px;
+            color: #555;
+            font-style: italic;
+        }
+        
+        .footer-note {
+            position: absolute;
+            bottom: -40px;
+            right: 10px;
+            font-size: 13px;
+            color: #777;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="envelope-container">
+        <div class="external-text"></div>
+        
+        <div class="envelope" id="envelope">
+            <div class="envelope-flap"></div>
+            <div class="envelope-front-text"></div>
+            
+            <div class="letter">
+                <div class="receiver">Para: Yoss <3 </div>
+                <div class="letter-content">
+                    Cuanto más tiempo estoy<br>
+                    contigo más Me Encantas!
+                </div>
+                
+                <!-- Flores decorativas -->
+                <div class="flowers">
+                    <div class="flower">
+                        <div class="petal"></div>
+                        <div class="petal"></div>
+                        <div class="petal"></div>
+                        <div class="petal"></div>
+                        <div class="flower-center"></div>
+                    </div>
+                    <div class="flower">
+                        <div class="petal"></div>
+                        <div class="petal"></div>
+                        <div class="petal"></div>
+                        <div class="petal"></div>
+                        <div class="flower-center"></div>
+                    </div>
+                    <div class="flower">
+                        <div class="petal"></div>
+                        <div class="petal"></div>
+                        <div class="petal"></div>
+                        <div class="petal"></div>
+                        <div class="flower-center"></div>
+                    </div>
+                </div>
+                
+                <div class="sender">De: Santi</div>
+            </div>
+        </div>
+        
+        <div class="footer-note"></div>
+    </div>
+
+    <script>
+        const envelope = document.getElementById('envelope');
+        
+        envelope.addEventListener('click', function() {
+            this.classList.toggle('open');
+            
+            if(!this.classList.contains('open')) {
+                const letterContent = document.querySelector('.letter-content');
+                const flowers = document.querySelector('.flowers');
+                letterContent.style.animation = 'none';
+                flowers.style.animation = 'none';
+                setTimeout(() => {
+                    letterContent.style.animation = 'fadeIn 1.2s ease';
+                    flowers.style.animation = 'fadeIn 1s ease 0.3s both';
+                }, 10);
+            }
+        });
+    </script>
+</body>
+</html>
